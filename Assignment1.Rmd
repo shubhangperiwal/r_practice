@@ -1,0 +1,77 @@
+---
+title: "Assignment 1"
+author: "Shubhang Periwal 19201104"
+date: "10/8/2019"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+```{r include=FALSE}
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
+```
+
+```{r Task 1}
+# question 1
+setwd('D://r programming')
+data <- read.csv('EurostatCrime2017.csv', header = TRUE, row.names = 1)
+
+# question 2
+#number of rows and columns
+dim(data)
+#structure of data set
+str(data)
+#q3 i) adding a new column
+columns = c("Theft","Theft_of_a_motorized_land_vehicle","Burglary","Burglary_of_private_residential_premises")
+data$All_Theft <- rowSums(data[,columns], na.rm = TRUE)
+#q3 ii) Removing columns
+data <- data[,!(names(data) %in% columns)]
+#q4 Listing countries with missing data
+country_list <- row.names(data[rowSums(is.na(data))>0,])
+#There are 16 countries with NA values
+#q5 Removing countries with missind data frames
+data <- na.omit(data)
+#q6
+dim(data)
+# 25 rows and 8 columns are remaining
+```
+
+## R Markdown
+
+
+
+```{r Task 2 }
+# 3 most common crimes in Ireland
+irish_rop <- order(-data["Ireland",])
+colnames(data[irish_rop[1:3]])
+# Top 3 are 
+#"All_Theft"                                          
+#"Unlawful_acts_involving_controlled_drugs_or_precursors"
+#"Assault"
+# Highest overall record of offences
+data$Total <- rowSums(data)
+colnames(data)
+row.names(data[which.max(data$Total),])
+#The result is Switzerland
+```
+
+## Including Plots
+
+Creativity 
+
+
+```{r Task 3 }
+barplot(names.arg = rownames(data),cex.names=0.7,horiz=F, las=2,col="skyblue", data$Total,)
+barplot(names.arg = rownames(data),cex.names=0.7,horiz=F, las=2,col="red", data$All_Theft, add=TRUE)
+barplot(names.arg = rownames(data),cex.names=0.7,horiz=F, las=2,col="green", data$Sexual.violence, add=TRUE)
+
+# From the bar plots we can see that thefts account for majority of the crime 
+# in Europe, where the minimum amount of theft is in Belgium and Luxembourg 
+# compared to other regions. We can also analyse that Scotland and UK have 
+# relatively high amounts of sexual violences compared to its other counter 
+# part countries. 
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

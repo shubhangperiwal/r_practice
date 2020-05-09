@@ -1,0 +1,215 @@
+---
+title: "Endsem"
+author: "Shubhang Periwal 19201104"
+date: "11/28/2019"
+output: pdf_document
+---
+
+```{r }
+setwd("D:/rprog")
+library(ggplot2)
+library(rio)
+library(tidyverse)
+library(plotly)
+library(gganimate)
+library(inline)
+library(pixmap)
+library(MASS)
+library(dplyr)
+```
+
+## R Markdown
+
+question 1
+```{r }
+ds1 <- import("HR021.csv",setclass = "tibble",header=TRUE)
+ds2 = import("s50_1997.txt")
+ds3 = import("s50_1995.txt")
+ds2
+ds3
+```
+
+
+Question 2
+```{r }
+#a
+ds3$alcohol = factor(ds3$alcohol)
+ds3$drugs = factor(ds3$drugs)
+ds3$smoke = factor(ds3$smoke)
+ds3$sport = factor(ds3$sport)
+str(ds3)
+```
+
+
+
+
+```{r }
+#Q2 b
+#,legend("topright",legend=c("Not","Occasional","Regular"),lty=c(1,1,1),lwd = c(3,3,3),col=c("green","blue","red"))
+
+t1 = table(ds3$smoke)
+t2 = table(ds3$sport)
+x = barplot(t1,xlab="Frequency of Smoking",ylab="Number of People",ylim = c(0,50),col=c("green","blue","red"))
+y =  barplot(t2,xlab="Frequency of Playing",ylab="Number of People",ylim = c(0,50),col=c("blue","red"))
+
+par(mfrow=c(1,2))
+x
+y
+```
+The resulting plots show that there are high number of non smokers and low number of actual smokers, 
+which is a good thing. 
+The number of students who play regularly are almost 3 times the number of people who do not play. 
+This shows that there maybe a positive correlation between students who play and students who 
+don't smoke. 
+```{r }
+#c
+
+y2 = length(ds3$smoke)
+y1 = length(which(ds3$smoke=="3")) + length(which(ds3$smoke=="2"))
+y1/y2
+
+y3 = length(which(ds3$smoke=="3" & ds3$sport=="2")) + length(which(ds3$smoke=="2" & ds3$sport=="2"))
+y3/y2
+```
+The proportion of pupils who smoke atleast occassionaly is 0.24
+The proportion of pupils who smoke and play is 0.18
+
+```{r }
+#d
+class(ds3) <- c("s50survey")
+summary.s50survey <- function(ds3){
+  l1 = length(ds3$smoke)
+  l2 = length(ds3$drugs)
+  l3 = length(ds3$alcohol)
+  l4 = length(ds3$sport)
+  
+  hsm = length(which(ds3$smoke=="3"))/l1
+  lsm = length(which(ds3$smoke=="2"))/l1
+  nsm = length(which(ds3$smoke=="1"))/l1
+  
+    hd = length(which(ds3$drugs=="4"))/l2
+  ld = length(which(ds3$drugs=="2"))/l2
+  nd = length(which(ds3$drugs=="1"))/l2
+  md = length(which(ds3$drugs=="3"))/l2
+  
+  al1 = length(which(ds3$alcohol=="1"))/l3
+  al2 = length(which(ds3$alcohol=="2"))/l3
+  al3= length(which(ds3$alcohol=="3"))/l3
+  al4 = length(which(ds3$alcohol=="4"))/l3
+  al5 = length(which(ds3$alcohol=="5"))/l3
+  
+  sp1 = length(which(ds3$sport=="1"))/l4
+  sp2 = length(which(ds3$sport=="2"))/l4
+
+  cat("Smokers by Frequency\n ")
+  cat("High Smokers: ")
+  cat(hsm)
+  cat("\n")
+    cat("Low Smokers: ")
+  cat(lsm)
+  cat("\n")
+    cat("Non Smokers: ")
+  cat(nsm)
+  cat("\n")
+  
+    cat("Frequency by Drug Consumption\n ")
+  cat("High Users: ")
+  cat(hd)
+  cat("\n")
+    cat("Occasional: ")
+  cat(md)
+  cat("\n")
+    cat("Tried Once: ")
+  cat(ld)
+  cat("\n")
+     cat("Non Users: ")
+  cat(nd)
+  cat("\n")
+  
+      cat("by Alcohol Consumption\n ")
+  cat("High Users: ")
+  cat(al5)
+  cat("\n")
+    cat("Occasional: ")
+  cat(al4)
+  cat("\n")
+    cat("once a month: ")
+  cat(al3)
+  cat("\n")
+     cat("once/twice a year: ")
+  cat(al2)
+  cat("\n")
+  cat("Non Drinkers: ")
+  cat(al1)
+  cat("\n")
+  
+    cat("Sports by Frequency\n ")
+  cat("High : ")
+  cat(sp2)
+  cat("\n")
+    cat("Low : ")
+  cat(sp1)
+  cat("\n")
+}
+summary(ds3)
+#(.72) who did not use cannabis or 72%
+```
+The proportion of students who do not use cannabis is 0.72
+#e
+```{r }
+ds2$alcohol = factor(ds2$alcohol)
+ds2$drugs = factor(ds2$drugs)
+ds2$smoke = factor(ds2$smoke)
+ds2$sport = factor(ds2$sport)
+str(ds2)
+class(ds2) <- c("s50survey")
+summary(ds2)
+temp = 50*(.74) - 50*(.38)
+temp
+```
+People who played sports have decreased from 37 to 18
+
+#q3 a
+```{r }
+ds1 <- import("HR021.csv",setclass = "tibble",header=TRUE)
+colnames(ds1)
+
+#colnames(ds1) = c("Sex","Admissions","CHO","`2015`","`2016`","`2017`")
+
+str(ds1)
+
+
+```
+
+#q3 b
+```{r }
+library(dplyr)
+tem = filter(ds1,ds1$Admissions=="All admissions",Sex == "Male")
+tef = filter(ds1,ds1$Admissions=="All admissions",Sex == "Female")
+t1 = sum(tem$`2017`)
+t2 = sum(tef$`2017`)
+t1
+t2
+```
+The number of males : 8522
+The number of females : 8478
+
+#q3 c
+```{r }
+ds1new = filter(ds1,ds1$Admissions=="All admissions")
+ds1new <- pivot_longer(ds1new, cols = `2015`:`2017`,
+names_to = "Year", values_to = "`All admissions`")
+dc = c('Admissions')
+ds1new = ds1new[-2]
+
+str(ds1new)
+
+```
+
+
+```{r }
+
+ds1new = data.frame(ds1new)
+ggplot(ds1new,aes(x=CHO,y=X.All.admissions.,color=Sex))+geom_point() + facet_wrap(~Year)
+
+```

@@ -1,0 +1,41 @@
+Sex,Admissions,CHO,2015,2016,2017
+Male,First admissions,CHO 1,225,246,249
+Male,First admissions,CHO 2,371,323,292
+Male,First admissions,CHO 3,222,202,226
+Male,First admissions,CHO 4,505,441,447
+Male,First admissions,CHO 5,407,356,392
+Male,First admissions,CHO 6,254,185,187
+Male,First admissions,CHO 7,476,455,467
+Male,First admissions,CHO 8,358,440,502
+Male,First admissions,CHO 9,450,452,437
+Male,First admissions,Non-resident,25,35,21
+Male,All admissions,CHO 1,703,746,797
+Male,All admissions,CHO 2,957,808,737
+Male,All admissions,CHO 3,671,581,630
+Male,All admissions,CHO 4,1385,1307,1307
+Male,All admissions,CHO 5,944,882,971
+Male,All admissions,CHO 6,783,646,657
+Male,All admissions,CHO 7,1263,1115,1157
+Male,All admissions,CHO 8,1061,1011,1026
+Male,All admissions,CHO 9,1262,1196,1212
+Male,All admissions,Non-resident,27,39,28
+Female,First admissions,CHO 1,203,210,185
+Female,First admissions,CHO 2,276,238,215
+Female,First admissions,CHO 3,233,219,211
+Female,First admissions,CHO 4,363,380,391
+Female,First admissions,CHO 5,290,281,302
+Female,First admissions,CHO 6,248,196,188
+Female,First admissions,CHO 7,453,425,479
+Female,First admissions,CHO 8,343,396,398
+Female,First admissions,CHO 9,383,400,430
+Female,First admissions,Non-resident,29,25,20
+Female,All admissions,CHO 1,717,736,702
+Female,All admissions,CHO 2,777,682,674
+Female,All admissions,CHO 3,677,703,632
+Female,All admissions,CHO 4,1179,1177,1248
+Female,All admissions,CHO 5,824,797,821
+Female,All admissions,CHO 6,845,803,752
+Female,All admissions,CHO 7,1343,1277,1324
+Female,All admissions,CHO 8,1065,992,1011
+Female,All admissions,CHO 9,1330,1215,1288
+Female,All admissions,Non-resident,47,30,26

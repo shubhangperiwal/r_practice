@@ -1,0 +1,30 @@
+---
+title: "R Markdown Task"
+author: "Shubhang Periwal 19201104"
+date: "9/24/2019"
+output: pdf_document
+---
+
+```{r load package}
+library('MASS')
+
+
+```
+
+## R Markdown
+
+
+```{r The shrimp dataset}
+data('shrimp')
+shrimp
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r Plot}
+plot(shrimp)
+```
+
+

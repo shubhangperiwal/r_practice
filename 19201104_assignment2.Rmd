@@ -1,0 +1,148 @@
+---
+title: "Assignment 2"
+author: "Shubhang Periwal 19201104"
+date: "11/7/2019"
+output: pdf_document
+---
+
+```{r}
+# Question 1
+dataset <- read.csv("mly532.csv",skip=19)
+```
+
+
+
+```{r}
+#q2
+DublinAirport <- read.csv("mly532.csv",skip=19,header=TRUE)
+str(DublinAirport)
+```
+
+
+```{r}
+#q3
+DublinAirport$month <- factor(DublinAirport$month,labels=month.name)
+```
+
+
+```{r}
+#q4
+temp_list <- aggregate(DublinAirport$rain,list(DublinAirport$month),mean)
+temp_list[[1]][which(temp_list[2]==max(temp_list[2]))]
+temp_list[[1]][which(temp_list[2]==min(temp_list[2]))]
+#Maximum is in December 
+#Minimum is in February
+```
+
+```{r}
+#q5
+DublinAirport$season <- factor(DublinAirport$month,labels=
+                                 c("Winter","Winter","Spring","Spring","Spring",                                                            "Summer","Summer","Summer","Autumn","Autumn","Autumn",
+                                                            "Winter"),levels=month.name)
+```
+
+```{r}
+#q6
+class(DublinAirport) <- c("WeatherData","data.frame")
+```
+
+```{r}
+#q7
+summary.WeatherData <- function(wd){
+  cat('RAIN\n')
+  cat('Mean by seasons:\n')
+  print(aggregate(wd$rain,list(wd$season),mean,na.rm=TRUE))
+  cat('Standard Deviation by seasons:\n')
+  print(aggregate(wd$rain,list(wd$season),sd,na.rm=TRUE))
+  cat('Minimum rain by seasons:\n')
+  print(aggregate(wd$rain,list(wd$season),min,na.rm=TRUE))
+  cat('Maximum rain by seasons:\n')
+  print(aggregate(wd$rain,list(wd$season),max,na.rm=TRUE))
+
+  cat('\nMAXTP\n')
+  cat('Mean by seasons:\n')
+  print(aggregate(wd$maxtp,list(wd$season),mean,na.rm=TRUE))
+  cat('Standard Deviation by seasons:\n')
+  print(aggregate(wd$maxtp,list(wd$season),sd,na.rm=TRUE))
+  cat('Minimum maxtp by seasons:\n')
+  print(aggregate(wd$maxtp,list(wd$season),min,na.rm=TRUE))
+  cat('Maximum maxtp by seasons:\n')
+  print(aggregate(wd$maxtp,list(wd$season),max,na.rm=TRUE))
+
+  cat('\nMINTP\n')
+  cat('Mean by seasons:\n')
+  print(aggregate(wd$mintp,list(wd$season),mean,na.rm=TRUE))
+  cat('Standard Deviation by seasons:\n')
+  print(aggregate(wd$mintp,list(wd$season),sd,na.rm=TRUE))
+  cat('Minimum mintp by seasons:\n')
+  print(aggregate(wd$mintp,list(wd$season),min,na.rm=TRUE))
+  cat('Maximum mintp by seasons:\n')
+  print(aggregate(wd$mintp,list(wd$season),max,na.rm=TRUE))
+  
+  cat('\nMAXGT\n')
+
+  cat('Mean by seasons:\n')
+  print(aggregate(wd$maxgt,list(wd$season),mean,na.rm=TRUE))
+  cat('Standard Deviation by seasons:\n')
+  print(aggregate(wd$maxgt,list(wd$season),sd,na.rm=TRUE))
+  cat('Minimum maxgt by seasons:\n')
+  print(aggregate(wd$maxgt,list(wd$season),min,na.rm=TRUE))
+  cat('Maximum maxgt by seasons:\n')
+  print(aggregate(wd$maxgt,list(wd$season),max,na.rm=TRUE))
+
+
+}
+summary(DublinAirport)
+#Findings
+#The minimum rain is during the spring where the mean is lowest of all
+#The value in spring is less in each and every statistical measure
+#Even though autumn has the highest mean, but it has low amount of variance 
+#when compared to winter.  Autumn has more amount of rain as 
+#compared to other seasons, so it is advisable to take your umbrella along side
+#Even though the maximum value in winter is higher, but rains in autumn are more
+#than other seasons due to its high mean. The variation of rain is also highest 
+#as can be seen by its standard deviation. 
+
+# We can see from maxgt that winter is the windiest month of all,
+# followed by autumn and spring. There is a relation between temperature and 
+# windspeeds. Winter having the minimum temperature also has the maximum wind
+# speeds. Which might be the effect of low temperatures. This is also true for
+# summers and other seaons. Gust speed and temperature are inversely related.
+# we should work on a relationship between temperature and wind speeds, if one
+# can be used to predict the other.
+```
+
+```{r}
+#q8
+plot.WeatherData <- function(wd,st_year=2015,ed_year=2018,g1=TRUE,g2=TRUE,g3=TRUE){
+  par(mfrow=c(3,1))
+  if(g1){myts1 <- wd[wd$year>=st_year&wd$year<=ed_year,c("maxtp","mintp")]
+  myts <- ts(myts1,frequency = 12,start=c(st_year,1))
+  plot.ts(myts,plot.type = 'single',xlab="YEAR",ylab="TEMPERATURE",col=c("blue","red")
+          , main="Minimum and Maximum Temperature")
+  legend(st_year, 25, legend=c("maxtp", "mintp"),
+         col=c("blue","red"), lty=1:1,cex=0.8)
+  }
+  if(g2){myts1 <- wd[wd$year>=st_year&wd$year<=ed_year,"rain"]
+  myts <- ts(myts1,frequency = 12,start=c(st_year,1))
+  plot.ts(myts,plot.type = 'single',xlab="YEAR",ylab="Precipitaion in mm",col="blue", 
+          main="Precipitation Amount")
+  legend(st_year, 180, legend=c("Rainfall"),
+         col=c("blue"), lty=1:1,cex=0.8)
+  }
+  if(g3){myts1 <- wd[wd$year>=st_year&wd$year<=ed_year,"maxgt"]
+  myts <- ts(myts1,frequency = 12,start=c(st_year,1))
+  plot.ts(myts,plot.type = 'single',xlab="YEAR",ylab="Gust",col="red", 
+          main="Maximum Gust Speed")
+  legend(st_year, 50, legend=c("maxgt"),
+         col=c("red"), lty=1:1,cex=0.8)
+  }
+}
+
+plot(DublinAirport,st_year=2015,ed_year=2018,g1=TRUE,g2=TRUE,g3=TRUE)
+```
+
+
+
+
+
